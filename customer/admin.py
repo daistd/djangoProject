@@ -141,13 +141,13 @@ class SverkaResource(resources.ModelResource):
         fields = ('date', 'id', 'company', 'order',
                   'payment', 'company', 'car', 'weight',
                   'price', 'order_amount', 'manager',
-                  'cement_type', 'payment_type', 'payment_amount', 'balance'
+                  'cement_type', 'payment_type', 'payment_amount', 'balance', 'kaspi_id'
                   )
         export_order = (
             'date', 'id', 'company', 'order',
             'payment', 'car', 'weight',
             'price', 'order_amount', 'manager',
-            'cement_type', 'payment_type', 'payment_amount', 'balance'
+            'cement_type', 'payment_type', 'payment_amount', 'balance', 'kaspi_id'
         )
 
         def get_queryset(self):

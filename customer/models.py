@@ -12,6 +12,12 @@ class Customer(models.Model):
     name = models.CharField('Клиент', max_length=255)
     ceo = models.CharField('Контактное лицо', max_length=255)
     balance = models.IntegerField('Текущий баланс', default=0)
+    kaspi_id = models.CharField('Капси ID', max_length=255, editable=False, null=True)
+
+    def save(self, *args, **kwargs):
+        self.save()
+        self.kaspi_id = str(self.id) + self.ceo.strip()
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return "%s" % self.name
@@ -24,7 +30,6 @@ class Order(models.Model):
     cement = models.ForeignKey(CementType, on_delete=models.CASCADE)
     weight = models.IntegerField('Масса')
     price = models.IntegerField("Цена")
-    current_date = models.DateField('Дата', default=timezone.now, blank=True)
     date = models.DateField('Дата поставки', blank=True)
     amount = models.IntegerField("Сумма", default=0)
 

@@ -60,7 +60,7 @@ class CustomerAdmin(ImportExportModelAdmin):
     resource_class = CustomerResource
     list_display = ('id', 'name', 'phone', 'balance')
     list_filter = ('name', 'balance')
-    # list_editable = ['balance']
+    readonly_fields = ('kaspi_id',)
 
 
 admin.site.register(Customer, CustomerAdmin)
@@ -124,6 +124,12 @@ class SverkaResource(resources.ModelResource):
         column_name='Метод оплаты',
         attribute='payment_type',
         widget=ForeignKeyWidget(PaymentType, 'type'))
+
+    kaspi_id = fields.Field(
+        column_name='Каспи ID',
+        attribute='kaspi_id',
+        widget=ForeignKeyWidget(Customer, 'kaspi_id')
+    )
 
     class Meta:
         model = Sverka

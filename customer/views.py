@@ -14,10 +14,15 @@ def get_name(request):
             # process the data in form.cleaned_data as required
             # ...
             # redirect to a new URL:
-            return HttpResponseRedirect('/thanks/')
+            seo = request.POST
+            return HttpResponseRedirect('/thanks/'+seo.get('ceo'))
 
     # if a GET (or any other method) we'll create a blank form
     else:
         form = CustomerForm()
 
     return render(request, 'index.html', {'form': form})
+
+
+def thanks(request, name):
+    return render(request, 'thanks.html', {'name': name})

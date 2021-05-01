@@ -22,7 +22,7 @@ from customer import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('form/', views.get_name),
-    # path('form/', views.get_name),
+    path('', views.get_name),
+    path('thanks/<str:name>', views.thanks),
 
 ]

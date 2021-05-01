@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from .forms import CustomerForm
+from .models import Customer
 
 
 def get_name(request):
@@ -10,12 +11,8 @@ def get_name(request):
         form = CustomerForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            form.save()
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            seo = request.POST
-            return HttpResponseRedirect('/thanks/'+seo.get('ceo'))
+            customer = form.save()
+            return HttpResponseRedirect('/thanks/'+customer.ceo+'/'+customer.kaspi_id)
 
     # if a GET (or any other method) we'll create a blank form
     else:
@@ -24,5 +21,5 @@ def get_name(request):
     return render(request, 'index.html', {'form': form})
 
 
-def thanks(request, name):
-    return render(request, 'thanks.html', {'name': name})
+def thanks(request, name, kaspi_id):
+    return render(request, 'thanks.html', {'name': name, 'kaspi_id':kaspi_id})

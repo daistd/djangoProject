@@ -15,9 +15,12 @@ class Customer(models.Model):
     kaspi_id = models.CharField('Капси ID', max_length=255, editable=False, null=True)
 
     def save(self, *args, **kwargs):
-        self.save()
-        self.kaspi_id = str(self.id) + self.ceo.strip()
+        super().save(*args, **kwargs)
+        self.kaspi_id = self.get_kaspi_id()
         return super().save(*args, **kwargs)
+
+    def get_kaspi_id(self):
+        return str(self.pk) + self.ceo.strip()
 
     def __str__(self):
         return "%s" % self.name

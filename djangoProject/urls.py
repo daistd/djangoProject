@@ -23,6 +23,6 @@ from customer import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.get_name),
-    path('thanks/<str:name>', views.thanks),
+    path('thanks/<str:name>/<str:kaspi_id>', views.thanks),
 
 ]

@@ -73,10 +73,7 @@ class Payment(models.Model):
     date = models.DateField(default=timezone.now, blank=True)
 
     def save(self, *args, **kwargs):
-        current_amount = 0
-        if self.amount != 0:
-            current_amount = self.amount
-        self.company.balance = self.company.balance + current_amount - self.amount
+        self.company.balance = self.company.balance + self.amount
         self.company.save()
         super().save(*args, **kwargs)
         current_sverka = Sverka.objects.filter(payment=self)

@@ -59,6 +59,7 @@ class Order(models.Model):
         sverka.order_amount = self.amount
         sverka.manager = self.manager
         sverka.balance = self.company.balance
+        sverka.kaspi_id = self.company.kaspi_id
         sverka.save()
         return super().save(*args, **kwargs)
 
@@ -98,6 +99,7 @@ class Payment(models.Model):
         sverka.payment_amount = self.amount
         sverka.manager = self.manager
         sverka.balance = self.company.balance
+        sverka.kaspi_id = self.company.kaspi_id
         sverka.save()
         return super().save(*args, **kwargs)
 
@@ -119,3 +121,4 @@ class Sverka(models.Model):
     payment_type = models.ForeignKey(PaymentType, on_delete=models.CASCADE, null=True)
     payment_amount = models.IntegerField("Сумма Оплаты", null=True)
     balance = models.IntegerField('Сальдо', default=0)
+    kaspi_id = models.CharField('Капси перевод', max_length=255)

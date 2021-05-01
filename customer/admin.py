@@ -1,8 +1,11 @@
 from django.contrib import admin
 from django.db.models import Sum
 from import_export.admin import ImportExportModelAdmin
-from import_export import resources
-from customer.models import Customer, Order, Payment
+from import_export import resources, fields
+from import_export.widgets import ManyToManyWidget, ForeignKeyWidget
+
+from company.models import Car, Manager, CementType
+from customer.models import Customer, Order, Payment, Sverka, PaymentType
 from django.contrib.admin import DateFieldListFilter
 from django.utils import timezone
 from import_export.fields import Field
@@ -55,7 +58,7 @@ class CustomerResource(resources.ModelResource):
 
 class CustomerAdmin(ImportExportModelAdmin):
     resource_class = CustomerResource
-    list_display = ('id', 'name', 'bin', 'balance')
+    list_display = ('id', 'name', 'phone', 'balance')
     list_filter = ('name', 'balance')
     # list_editable = ['balance']
 
@@ -87,6 +90,13 @@ admin.site.register(Order, OrderAdmin)
 #     pass
 
 
+@admin.register(PaymentType)
+class PaymentTypeAdmin(ImportExportModelAdmin):
+    list_display = ['id', 'type']
+    list_filter = ['type']
+    list_editable = ['type']
+
+
 @admin.register(Payment)
 class PaymentAdmin(ImportExportModelAdmin):
     list_display = ('company', 'date', 'amount', 'manager_name')
@@ -97,3 +107,77 @@ class PaymentAdmin(ImportExportModelAdmin):
         return obj.manager.name
     manager_name.short_description = "Менеджер"
 
+
+class SverkaResource(resources.ModelResource):
+    company = fields.Field(
+        column_name='Клиент',
+        attribute='company',
+        widget=ForeignKeyWidget(Customer, 'name'))
+    car = fields.Field(
+        column_name='Машина',
+        attribute='car',
+        widget=ForeignKeyWidget(Car, 'number'))
+    manager = fields.Field(
+        column_name='Менеджер',
+        attribute='manager',
+        widget=ForeignKeyWidget(Manager, 'name'))
+    cement_type = fields.Field(
+        column_name='Тип Цемента',
+        attribute='cement_type',
+        widget=ForeignKeyWidget(CementType, 'type'))
+    payment_type = fields.Field(
+        column_name='Метод оплаты',
+        attribute='payment_type',
+        widget=ForeignKeyWidget(PaymentType, 'type'))
+    # 'id', 'company', 'order',
+    # 'payment', 'company', 'car', 'weight',
+    # 'price', 'order_amount', 'manager',
+    # 'cement_type', 'payment_type', 'payment_amount'
+    #
+    # def get_export_headers(self):
+    #     headers = super().get_export_headers()
+    #     for i, h in enumerate(headers):
+    #         new_fields = {
+    #             'company': 'Клиент',
+    #             'balance': 'Баланс',
+    #             'date': 'Дата',
+    #             'order_amount': 'Количество',
+    #             'payment_amount': 'Сумма оплаты'
+    #         }
+    #         if h in new_fields:
+    #             headers[i] = new_fields[h]
+    #     return headers
+
+    balance = Field
+
+    class Meta:
+        model = Sverka
+        widgets = {
+            'date': {'format': '%d.%m.%Y'},
+
+        }
+        widget = ManyToManyWidget(Customer, field='name')
+        fields = ('date', 'id', 'company', 'order',
+                  'payment', 'company', 'car', 'weight',
+                  'price', 'order_amount', 'manager',
+                  'cement_type', 'payment_type', 'payment_amount'
+                  )
+        export_order = (
+            'date', 'id', 'company', 'order',
+            'payment', 'car', 'weight',
+            'price', 'order_amount', 'manager',
+            'cement_type', 'payment_type', 'payment_amount'
+        )
+
+        def get_queryset(self):
+            return self._meta.model.objects.order_by('date')
+
+
+class SverkaAdmin(ImportExportModelAdmin):
+    resource_class = SverkaResource
+    list_display = ('id', 'date', 'company')
+    list_filter = ('company', 'date')
+    ordering = ('date',)
+    # list_editable = ['balance']
+
+admin.site.register(Sverka, SverkaAdmin)

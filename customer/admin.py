@@ -124,7 +124,7 @@ class SverkaResource(resources.ModelResource):
         column_name='Метод оплаты',
         attribute='payment_type',
         widget=ForeignKeyWidget(PaymentType, 'type'))
-    kaspi_id = Field
+    kaspi_id = fields.Field()
 
     class Meta:
         model = Sverka

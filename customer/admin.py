@@ -83,11 +83,6 @@ class OrderAdmin(ImportExportModelAdmin):
 
 
 admin.site.register(Order, OrderAdmin)
-#
-#
-# @admin.register(Order)
-# class OrderAdminEM(ImportExportModelAdmin):
-#     pass
 
 
 @admin.register(PaymentType)
@@ -129,26 +124,6 @@ class SverkaResource(resources.ModelResource):
         column_name='Метод оплаты',
         attribute='payment_type',
         widget=ForeignKeyWidget(PaymentType, 'type'))
-    # 'id', 'company', 'order',
-    # 'payment', 'company', 'car', 'weight',
-    # 'price', 'order_amount', 'manager',
-    # 'cement_type', 'payment_type', 'payment_amount'
-    #
-    # def get_export_headers(self):
-    #     headers = super().get_export_headers()
-    #     for i, h in enumerate(headers):
-    #         new_fields = {
-    #             'company': 'Клиент',
-    #             'balance': 'Баланс',
-    #             'date': 'Дата',
-    #             'order_amount': 'Количество',
-    #             'payment_amount': 'Сумма оплаты'
-    #         }
-    #         if h in new_fields:
-    #             headers[i] = new_fields[h]
-    #     return headers
-
-    balance = Field
 
     class Meta:
         model = Sverka
@@ -160,13 +135,13 @@ class SverkaResource(resources.ModelResource):
         fields = ('date', 'id', 'company', 'order',
                   'payment', 'company', 'car', 'weight',
                   'price', 'order_amount', 'manager',
-                  'cement_type', 'payment_type', 'payment_amount'
+                  'cement_type', 'payment_type', 'payment_amount', 'balance'
                   )
         export_order = (
             'date', 'id', 'company', 'order',
             'payment', 'car', 'weight',
             'price', 'order_amount', 'manager',
-            'cement_type', 'payment_type', 'payment_amount'
+            'cement_type', 'payment_type', 'payment_amount', 'balance'
         )
 
         def get_queryset(self):

@@ -112,24 +112,3 @@ class Sverka(models.Model):
     payment_type = models.ForeignKey(PaymentType, on_delete=models.CASCADE, null=True)
     payment_amount = models.IntegerField("Сумма Оплаты", null=True)
     balance = models.IntegerField('Сальдо', default=0)
-
-
-
-class Test:
-    orders = Order.objects.all().order_by('date')
-    payments = Payment.objects.all()
-    joined_dictionary = []
-
-    def show(self):
-        for order in self.orders:
-            print(order)
-            # current_payments = payments.filter(date__day=order.date.day, company=order.company)
-            current_payments = self.payments.filter(company=order.company)
-            for p in current_payments:
-                print(p)
-            joined = {}
-            # if current_payments:
-            #     for payment in current_payments:
-            #         joined = {**order, **payment}
-            self.joined_dictionary.append(joined)
-        print(self.joined_dictionary)

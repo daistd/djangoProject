@@ -121,4 +121,4 @@ class Sverka(models.Model):
     payment_type = models.ForeignKey(PaymentType, on_delete=models.CASCADE, null=True)
     payment_amount = models.IntegerField("Сумма Оплаты", null=True)
     balance = models.IntegerField('Сальдо', default=0)
-    kaspi_id = models.CharField('Капси перевод', max_length=255)
+    kaspi_id = models.CharField('Капси перевод', max_length=255, default='НЕТ ID')

@@ -124,12 +124,7 @@ class SverkaResource(resources.ModelResource):
         column_name='Метод оплаты',
         attribute='payment_type',
         widget=ForeignKeyWidget(PaymentType, 'type'))
-
-    kaspi_id = fields.Field(
-        column_name='Каспи ID',
-        attribute='kaspi_id',
-        widget=ForeignKeyWidget(Customer, 'kaspi_id')
-    )
+    kaspi_id = Field
 
     class Meta:
         model = Sverka
@@ -152,6 +147,9 @@ class SverkaResource(resources.ModelResource):
 
         def get_queryset(self):
             return self._meta.model.objects.order_by('date')
+
+        def dehydrate_kaspi_id(self, obj: Sverka):
+            return obj.company.kaspi_id
 
 
 class SverkaAdmin(ImportExportModelAdmin):

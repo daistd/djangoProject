@@ -35,6 +35,7 @@ class Order(models.Model):
         self.amount = self.weight*self.price
         self.company.balance = self.company.balance + current_amount - self.amount
         self.company.save()
+        super().save(*args, **kwargs)
         current_sverka = Sverka.objects.filter(order=self)
         if not current_sverka:
             sverka = Sverka()
@@ -77,6 +78,7 @@ class Payment(models.Model):
             current_amount = self.amount
         self.company.balance = self.company.balance + current_amount - self.amount
         self.company.save()
+        super().save(*args, **kwargs)
         current_sverka = Sverka.objects.filter(payment=self)
 
         if not current_sverka:
